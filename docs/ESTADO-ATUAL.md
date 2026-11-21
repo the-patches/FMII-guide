@@ -1,5 +1,25 @@
 # FMII-Recomp — estado técnico da v0.2.0 em desenvolvimento
 
+## Cenas aprovadas com HD desligado — 21/11/2026
+
+- As 84 cenas de `CENAS.json` agora têm versões nativas quantizadas a partir dos recortes HD aprovados. `scripts/build-native-scenes.py --output <pasta de trabalho> --apply` reproduz a conversão com backup. Gere o manifesto depois.
+- O Preview 2 limita a 64 os arquivos de substituição por mod. Os resultados estão agrupados em `mod/compatibility/scenes-mode-0.bin`, `scenes-mode-1.bin` e `scenes-mode-2.bin`, declarados em `source/manifest/data.json`. As lacunas entre cenas são preservadas do arquivo FMII de referência. Os 25 BINs individuais anteriores permanecem como fontes legadas, fora das substituições ativas.
+- HD desligado usa as mesmas cenas aprovadas em resolução/paleta nativa; HD ligado continua usando os mesmos PNGs anteriores. Nenhum dos 600 recortes HD de cenas (incluindo a abertura) foi alterado. A abertura também foi convertida posteriormente: `mod/compatibility/campaign-opening-native.bin` reúne a logo FMII e o painel de hieróglifos, carregados separadamente pelo motor. Reproduza somente esse recurso com `scripts/build-native-scenes.py --opening-only --output <pasta> --apply`; sem esse argumento o gerador inclui as 84 cenas e a abertura.
+- Foram conferidos 592 recortes por leitura independente de índices/paletas, sem divergências. Teste Windows carregou as 84 cenas com HD desligado; as nove panorâmicas foram conferidas também nas câmeras iniciais da referência. Teste adicional de seis cenas com HD ligado, incluindo camadas e flash da 208, com capturas compostas da janela.
+- Registros da tarefa e backups: `D:/Codex/FMII-importacao/native-scenes-approved/`. Dados permanentes em `metadados/cenas-nativas/`. Não houve teste em aparelho Android nesta etapa; a mudança é de dados compartilhados pelos dois sistemas.
+
+## Auditoria de tremida dos bustos — 21/11/2026
+
+- Correção posterior em desenvolvimento: `source/bust-cache.c` carrega `mod/compatibility/campaign-busts-native.bin` com o banco original dos 65 registros quando HD está desligado. Compilados os três objetos PC/Android; teste Windows confirmou os bancos de Mahad 43/60 e Karim 2/48, nas três poses, idênticos à ISO.
+- O ensaio de ajuste automático amplo das bocas HD deformou expressões e foi revertido após observação do usuário. Não reutilizar esse ensaio ou a piscada interpolada. Apenas as bocas de Mahad e Karim receberam ajuste localizado posterior (94 recortes em quatro registros); os demais arquivos HD devem coincidir com a cópia anterior. `scripts/stabilize-bust-mouths.py` agora está restrito a esses dois personagens. O script experimental `restore-hd-blink-transitions.py` não faz parte da correção aplicada.
+- Instalada a correção restrita com backup em `D:/Codex/FMII-importacao/bust-motion-fix/backup-installed/`: 101 arquivos verificados por leitura de volta, lista/checksums em `installed.json` na pasta de trabalho. Repetido teste Windows HD das cinco poses de Mahad/Karim; demais texturas HD preservadas por comparação byte a byte. Guia regenerado e `--check` aprovado. Android compilado, sem teste em aparelho. As piscadas HD anteriores foram preservadas; a fidelidade integral de todos os quadros originais vale para o modo nativo.
+
+- Conferência posterior direta da imagem `D:/Codex/Yu-Gi-Oh! Forbidden Memories (FM II Ghost Drop x15).BIN`: os 65 registros de bustos são idênticos byte a byte à extração usada na auditoria. Registro em `metadados/auditoria-bustos-movimento/iso-verificacao.json`. Isso confirma a referência das expressões para essa edição; não houve reparo aplicado ao pacote nesta conferência.
+
+- Usuário informou tremida em Mahad e Karim com HD ligado e desligado. Auditoria em `metadados/auditoria-bustos-movimento/LEIA-ME.md`, reproduzível com `scripts/audit-bust-motion.py`.
+- Comparadas 70 poses e as trilhas de 65 registros com a extração preservada `originais/dados-fmii/FMOD/FMODGTAV.1`; não foi encontrada a ISO bruta FMII para nova leitura. O modo sem HD também usa atlas refeito a partir das artes HD, portanto a descrição anterior de imagens nativas não significa pixels idênticos ao disco.
+- Identificadas alterações além dos lábios nas camadas de fala, especialmente Mahad, e perda dos estados intermediários da piscada de Karim. BIN e 4.474 texturas de bustos coincidem com a instalação. Não foi aplicado reparo ao mod nem realizado teste interativo nesta auditoria; correções e validação em jogo pendentes.
+
 Consulte [COMECE-AQUI.md](COMECE-AQUI.md) para retomar o projeto.
 
 ## Versionamento e changelog
@@ -9,11 +29,13 @@ Consulte [COMECE-AQUI.md](COMECE-AQUI.md) para retomar o projeto.
 
 ## Drops atuais: FMII e originais ausentes, por correspondência
 
-- As cartas presentes no FMII seguem a planilha. A extensão cobre apenas as 518 originais ausentes no mapa FMII: 484 receberam 4.712 associações do disco original em 28 duelistas. São 19 correspondências pelo mesmo nome/personagem e nove definidas pelo usuário em `metadados/drops-originais-correspondencias.json`.
-- Correspondências adicionais aprovadas: Thief Bakura/Heishin, Thief King Bakura/Heishin 2nd, Guardian Dox/Labyrinth Mage, Yami Marik/Seto 2nd, Yami Marik 2nd/Seto 3rd, Diabound/DarkNite, Zorc Necrophades/Nitemare, Ryo Bakura/Yami Bakura e Joey Wheeler/Jono 2nd. Kaiba/Seto Kaiba e Pegasus/Maximillion Pegasus continuam associados pelo personagem.
-- São 117 tabelas, 8.681 associações e 1.183 cartas com drop (683 originais e 500 exclusivas FMII). Pesos normalizados para 2.048 por rank, todos positivos. As 200 associações sem referência Ghost permanecem fixadas em 1.
-- Restam 34 originais ausentes aguardando distribuição: sete com referência apenas em personagens ainda não autorizados e 27 sem drop no disco original. O complemento Drop missing cards não foi incorporado. Pendências detalhadas em `metadados/drops-planilha/originais-pendentes.csv` e `importacao.json`.
-- `scripts/import-spreadsheet-drops.py --apply` reproduz com backup e `--check` confere. Backup anterior a estas sete aprovações em `D:/Codex/FMII-importacao/planilha-drops/antes-20261121T131709366713Z`. A instalação do jogo requer atualização a partir de `mod/`; o acesso de gravação direto desta sessão continua bloqueado. `INSTALAR-MOD.cmd` faz a instalação completa pelo usuário com backup e verificação.
+- As cartas presentes no FMII seguem a planilha. A extensão cobre apenas as 518 originais ausentes no mapa FMII: 491 receberam 6.988 associações do disco original em 39 duelistas. O mapa completo, com 19 correspondências pelo mesmo nome/personagem e vinte definidas pelo usuário, fica em `metadados/drops-originais-correspondencias.json`.
+- Correspondências adicionais aprovadas: Thief Bakura/Heishin, Thief King Bakura/Heishin 2nd, Guardian Dox/Labyrinth Mage, Yami Marik/Seto 2nd, Yami Marik 2nd/Seto 3rd, Diabound/DarkNite, Zorc Necrophades/Nitemare, Ryo Bakura/Yami Bakura, Joey Wheeler/Jono 2nd, Ishizu Ishtar/Isis, Priest Seto/Seto e Pharaoh Atem/Duel Master K. Kaiba/Seto Kaiba e Pegasus/Maximillion Pegasus continuam associados pelo personagem.
+- São 117 tabelas, 11.006 associações e 1.239 cartas com drop (722 originais e 517 exclusivas FMII). Pesos normalizados para 2.048 por rank, todos positivos. As 200 associações sem referência Ghost permanecem fixadas em 1.
+- As 27 cartas do FM original fora do catálogo FMII que ainda estavam sem drop foram atribuídas a Zorc Necrophades. O complemento Drop missing cards não foi incorporado. Pendências detalhadas em `metadados/drops-planilha/originais-pendentes.csv` e `importacao.json`.
+- O importador reproduz as tabelas com backup e verifica a sincronização com a opção `--check`.
+
+- Obelisk the Tormentor é recompensa de Seto Kaiba em S/A-Pow, com peso 1.
 
 ## Comparação histórica dos drops com o FM2 1.3.2
 
