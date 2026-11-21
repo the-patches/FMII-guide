@@ -1,4 +1,10 @@
-# FMII-Recomp — estado técnico da v0.2.0 em desenvolvimento
+# FMII-Recomp — estado técnico da v0.2.0
+
+## Arte HD da expansão — More Cards 1.7
+
+- Foram importadas 246 artes a partir do More Cards 1.7 por correspondência de nome. Os PNGs ficam em `mod/textures/fmii-card-art-hd/`. O relatório `metadados/artes-hd-more-cards.json` identifica a origem e as 272 cartas da expansão que ainda aguardam arte HD.
+- Texturas HD ativa as artes importadas na visualização ampliada e as miniaturas de 160 × 128, com a resolução interna acima de 1×. O recurso cobre apenas cartas adicionadas pelo FMII-Recomp.
+- Teste no Windows confirmou 246 artes registradas e a exibição de Dark Magician Girl nos dois modos. Os três objetos do mod foram compilados. Use `python scripts/import-more-cards-hd.py <pasta do More Cards>` para reproduzir a importação.
 
 ## Cenas aprovadas com HD desligado — 21/11/2026
 
@@ -24,7 +30,7 @@ Consulte [COMECE-AQUI.md](COMECE-AQUI.md) para retomar o projeto.
 
 ## Versionamento e changelog
 
-- A cópia em `mod/` é a `0.2.0-dev`, em preparação para a futura release 0.2.0. `CHANGELOG.md` registra as alterações desta etapa e alimenta a seção Changelog do guia.
+- A cópia em `mod/` é a `0.2.0`, cujo pacote de distribuição fica em `releases/0.2.0/`. `CHANGELOG.md` registra as alterações desta etapa e alimenta a seção Changelog do guia.
 - A release publicada 0.1.0 foi restaurada com o ZIP, o checksum e o leia-me originais. Seu SHA-256 é `ea2f2baec72fdf7c0d387d8a56abe27a979a4aca95e05c2ff95834b09a2ea3df`. O pacote de desenvolvimento anterior à correção do versionamento está em `D:\Codex\FMII-importacao\desenvolvimento-0.2.0\pacote-antes-do-versionamento\`.
 
 ## Drops atuais: FMII e originais ausentes, por correspondência
@@ -56,8 +62,7 @@ Os números desta seção registram o estado anterior à adoção da planilha.
 - As magias e armadilhas da expansão usam Eternal Draught (`copy: 664`) e declaram seu `effect` separadamente. Os rituais da expansão usam Dark Magic Ritual (`copy: 721`), e Polymerization conserva o efeito associado ao slot 695. Essas duas bases não têm receitas de fusão como ingredientes nas tabelas atuais. Os equips usam a própria tabela de compatibilidade do mod. O guia verifica as fusões resultantes da herança e o pacote atual tem zero pares herdados.
 - O início de uma campanha pode sortear o deck de 40 cartas do jogo base ou do FMII, com chances iguais para cada tabela. `source/manifest/starter_pools.json` contém os sete grupos e os pesos da entrada de nome do FMII. Há 70 cartas possíveis, incluindo 39 da expansão. `scripts/build-expansion-tables.py` recompõe as fusões e remapeia o deck inicial do FMII.
 - A extração histórica das tabelas de drops da ISO, com os filtros de premiação identificados, está em metadados/drops-fmii/. O script scripts/export-fmii-drops.py reproduz essa referência. No FMII-Recomp atual, a premiação usa as associações atuais da planilha e dos originais por nome desde a primeira vitória, inclusive na última rodada do Desafio do Palácio.
-- As molduras usam o campo frame da API, com a seleção de cartas lida do executável do FMII. Os patches do manifesto importam os trechos de textura e as paletas correspondentes da ISO. A opção Purple aponta para a paleta cinza de Horakhty.
-- A moldura da edição de deck é lida no LBA 18.687. O pacote tem oito setores extras antes da paleta. A moldura de Five-Headed Dragon foi validada no visor da edição de deck após a correção.
+- As molduras usam as paletas nativas do Recomp. Foram removidos os dez patches de moldura da ISO do FMII. As 46 cartas azuis do FMII usam a paleta nativa de ritual. O roxo do More Cards tem prioridade sobre o laranja do FMII, inclusive no B. Skull Dragon. As demais cartas laranjas conservam a cor do FMII usando a paleta nativa. Blue-Eyes White Dragon usa a moldura padrão. A auditoria das escolhas fica em `metadados/molduras-more-cards.json`.
 - O Desafio do Palácio roda na cena 0x32 da campanha. Depois de cada vitória, o roteiro volta ao diálogo do palácio para preparar o próximo duelo. A extensão usa o requisito de entrada do FMII, o sorteio adaptado e os decks importados.
 - **source/manifest/** contém as seções editáveis do manifesto. Depois de editar, execute `node scripts/build-mod-manifest.mjs` para gerar mod/mod.json.
 - Os dados dos efeitos do FMII ficam em `source/manifest/`. O código dos efeitos e do roteamento de drops fica em `source/effects/`. O pacote `mod/` inclui a biblioteca `fmii-recomp`, que inicializa o código da campanha e dos efeitos. `scripts/apply-fmii-effects.py` extrai os bônus fixos e as 46 receitas de Polymerization dos arquivos de referência. Megamorph usa o bônus de +1.000 do Recomp.
