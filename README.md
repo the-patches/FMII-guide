@@ -1,35 +1,38 @@
 # FMII Guide
 
-Este diret�rio cont�m o site est�tico do guia do FMII-Recomp, pronto para GitHub Pages e para abrir localmente.
+Este diretório contém o site estático do guia do FMII-Recomp, pronto para GitHub Pages e para abrir localmente.
 
 ## Arquivos do site
 
 - `index.html`: guia e dados das cartas, drops, receitas e duelistas.
 - `assets/guide.css`: estilos do guia.
-- `assets/guide.js`: navega��o, busca, filtros, ordena��o e exporta��o CSV.
-- `assets/cartas-originais/`: artes extra�das das cartas originais.
+- `assets/guide.js`: navegação, busca, filtros, ordenação e exportação CSV.
+- `assets/cartas-originais/`: artes extraídas das cartas originais.
 - `assets/mod/`: imagens utilizadas pelo guia, copiadas do mod.
-- `assets/ui/`: logo e fundo do cabe�alho.
-- `galeria.html` e `assets/galeria/`: galeria e suas imagens.
-- `docs/`: c�pias dos documentos que o site referencia.
-- `assets-manifest.json`: invent�rio e checksums das imagens e fontes copiadas.
-- `.nojekyll`: publica os arquivos est�ticos diretamente no GitHub Pages.
+- `assets/ui/`: logo e fundo do cabeçalho.
+- `docs/`: cópias dos documentos que o site referencia.
+- `assets-manifest.json`: inventário e checksums das imagens e fontes copiadas.
+- `.nojekyll`: publica os arquivos estáticos diretamente no GitHub Pages.
 
-Todos os caminhos do site s�o relativos a este diret�rio. O site n�o precisa da pasta do jogo, da ISO ou de um backend para funcionar. As rotas com `#` tamb�m funcionam em um endere�o de projeto, como `https://usuario.github.io/FMII-guide/`.
+Todos os caminhos do site são relativos a este diretório. O site não precisa da pasta do jogo, da ISO ou de um backend para funcionar. As rotas com `#` também funcionam em um endereço de projeto, como `https://usuario.github.io/FMII-guide/`.
 
-## Publica��o no reposit�rio FMII-guide
+## Publicação no repositório FMII-guide
 
-1. Coloque o conte�do deste diret�rio na raiz do reposit�rio, incluindo `assets/`, `docs/` e `.nojekyll`.
+1. Coloque o conteúdo deste diretório na raiz do repositório, incluindo `assets/`, `docs/` e `.nojekyll`.
 2. No GitHub, abra Settings > Pages.
-3. Em Build and deployment, selecione Deploy from a branch, a branch utilizada pelo reposit�rio e a pasta /(root).
-4. Salve. O GitHub mostrar� o endere�o quando a publica��o terminar.
+3. Em Build and deployment, selecione Deploy from a branch, a branch utilizada pelo repositório e a pasta /(root).
+4. Salve. O GitHub mostrará o endereço quando a publicação terminar.
 
-N�o copie a pasta de desenvolvimento inteira nem os arquivos BIN do jogo para publicar o guia.
+Não copie a pasta de desenvolvimento inteira nem os arquivos BIN do jogo para publicar o guia.
 
-## Fontes e manuten��o no projeto FMII-Recomp
+Publique somente o guia e suas imagens de cartas, retratos e interface. A galeria HD e suas imagens de cenas ficam fora do site.
 
-As fontes edit�veis ficam em `scripts/guide-template.html`, `scripts/guide.css` e `scripts/guide.js`. O gerador � `scripts/build-guide.py`; os dados v�m do mod e das auditorias do projeto. Execute o gerador e depois `--check` para atualizar e conferir este diret�rio.
+## Fontes e manutenção no projeto FMII-Recomp
 
-As c�pias publicadas do CSS e do JavaScript s�o id�nticas �s fontes. Para manter as altera��es em futuras gera��es, fa�a as edi��es nas fontes do projeto e regenere o site.
+As fontes editáveis ficam em `scripts/guide-template.html`, `scripts/guide.css` e `scripts/guide.js`. O gerador é `scripts/build-guide.py`; os dados vêm do mod e das auditorias do projeto. Execute o gerador e depois `--check` para atualizar e conferir este diretório.
 
-O gerador copia os recursos necess�rios e n�o apaga arquivos extras, configura��es de Git ou arquivos mantidos manualmente no diret�rio de publica��o.
+As cópias publicadas do CSS e do JavaScript são idênticas às fontes. Para manter as alterações em futuras gerações, faça as edições nas fontes do projeto e regenere o site.
+
+O repositório do site também preserva uma cópia dessas fontes em `sources/`, incluindo o gerador. Para regenerar os dados do jogo, use o projeto de desenvolvimento completo.
+
+O gerador copia os recursos necessários e não apaga arquivos extras, configurações de Git ou arquivos mantidos manualmente no diretório de publicação.
