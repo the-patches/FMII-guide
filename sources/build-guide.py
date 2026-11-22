@@ -10,6 +10,9 @@ import sys
 from html import escape
 from pathlib import Path
 
+from card_frames import card_frame_entries, native_frame
+from card_spellings import corrected_spelling
+
 
 ROOT = Path(__file__).resolve().parent.parent
 MOD = ROOT / 'mod'
@@ -19,6 +22,19 @@ EDITOR = WORK / 'Yu-Gi-Oh-Forbidden-Memories-Recompiled-0.3.1-preview.2/tools/pc
 DISC = ROOT.drive + '/JOGOS ISOS/Yu-Gi-Oh! - Forbidden Memories.bin'
 TOTAL = 2048
 ORIGINAL_ART = 'assets/cartas-originais'
+GOD_TRAP_NOTE = (
+    'Imune a armadilhas de destruição, como Mirror Force. Pyramid of Light é a exceção '
+    'e pode destruir esta carta quando ela ataca. Armadilhas que não destroem, como '
+    'Negate Attack e Magic Cylinder, ainda podem ativar.'
+)
+EFFECT_NOTES = {
+    'fmii-recomp:fmii-670:1': 'Enquanto Jinzo estiver com a face para cima no campo, '
+                              'armadilhas de destruição de ambos os lados ficam bloqueadas.',
+    'fmii-recomp:fmii-696:1': 'Quem invocar Horakhty com a face para cima vence o duelo imediatamente.',
+    'fmii-recomp:fmii-698:1': GOD_TRAP_NOTE,
+    'fmii-recomp:fmii-699:1': GOD_TRAP_NOTE,
+    'fmii-recomp:fmii-700:1': GOD_TRAP_NOTE,
+}
 
 
 def original_art_path(card_id):
@@ -165,6 +181,7 @@ def drop_pool(retail, edits, replace=False):
 
 def card_catalog(m, base, definitions):
     entries = {c['replace']: c for c in m['cards'] if isinstance(c.get('replace'), int)}
+    frames = {ref: frame for ref, _, _, frame in card_frame_entries(m)}
     text_colors = {c['card']: c.get('name') for c in m.get('card_text_colors', {}).get('cards', [])}
     refs = {str(i): i for i in base.cards}
     cards = []
@@ -175,6 +192,9 @@ def card_catalog(m, base, definitions):
     def collect(id, ref, card, entry):
         value = lambda field, default=None: entry.get(field, getattr(card, field, default))
         type_id = value('type')
+        kind = named(type_id, definitions.TYPE_NAMES)
+        name = display(value('name'))
+        declaration, effect = frames.get(ref, (None, False))
         monster = (isinstance(type_id, int) and type_id < 20) or type_id in definitions.TYPE_NAMES[:20]
         stars = value('stars', [getattr(card, 'star1', 0), getattr(card, 'star2', 0)])
         password = {'password': entry.get('password', base.passwords.get(id)),
@@ -183,13 +203,16 @@ def card_catalog(m, base, definitions):
         art = entry.get('art')
         thumbnail = entry.get('thumbnail')
         guide_art = f'../mod/{art}' if art else (original_art_path(id) if ref.isdecimal() else None)
-        cards.append(dict(id=id, ref=ref, name=display(value('name')), description=display(value('description', '')),
-                          type=named(type_id, definitions.TYPE_NAMES), attribute=named(value('attribute'), definitions.ATTRIBUTE_NAMES),
+        cards.append(dict(id=id, ref=ref, name=name, description=display(value('description', '')),
+                          effectNote=EFFECT_NOTES.get(ref),
+                          type=kind, attribute=named(value('attribute'), definitions.ATTRIBUTE_NAMES),
                           attack=value('attack') if monster else None, defense=value('defense') if monster else None,
                           level=value('level') if monster else None,
                           stars=[named(star, definitions.STAR_NAMES) for star in stars if star],
                           art=guide_art, thumbnail=f'../mod/{thumbnail}' if thumbnail else guide_art,
-                          frame=entry.get('frame'), nameColor=text_colors.get(int(ref) if ref.isdecimal() else ref),
+                          frame=entry.get('frame'), frameColor=native_frame(declaration, effect, kind),
+                          correctedSpelling=corrected_spelling(ref, name),
+                          nameColor=text_colors.get(int(ref) if ref.isdecimal() else ref),
                           password=password.get('password') or None,
                           starchips=password.get('starchips') if password.get('password') else None,
                           expansion=not ref.isdecimal()))

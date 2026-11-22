@@ -10,3 +10,11 @@ header{border-bottom-color:#685335;background:linear-gradient(100deg,#111a2afc 1
 .changelog{max-width:85ch;overflow-wrap:anywhere}
 .sort-column{display:inline-flex;align-items:center;gap:.4rem;padding:0;border:0;border-radius:2px;background:transparent;color:inherit;font-weight:inherit;text-align:left;white-space:nowrap}.sort-column span{color:var(--gold)}
 @media(max-width:600px){th,td{padding:.45rem .5rem}.card-head{gap:.7rem}.table-wide{min-width:610px}.no-mobile{display:none}.hero{grid-template-columns:1fr;gap:.45rem;padding-top:1.15rem;padding-bottom:1.25rem}.hero-logo{grid-row:1;width:min(68%,235px)}.recipe-card{min-width:7.5rem}.recipe-art{width:36px;height:35px}}
+.frame-color{white-space:nowrap}
+.frame-color::before{content:"";display:inline-block;width:.7em;height:.7em;margin-right:.4em;border-radius:50%;background:var(--frame-color,currentColor)}
+.frame-color[data-color="Azul"]{--frame-color:#649ef3}
+.frame-color[data-color="Dourado"]{--frame-color:#e6bc64}
+.frame-color[data-color="Laranja"]{--frame-color:#f09a58}
+.frame-color[data-color="Rosa"]{--frame-color:#eb8db8}
+.frame-color[data-color="Roxo"]{--frame-color:#b597f0}
+.frame-color[data-color="Verde"]{--frame-color:#63c6a3}

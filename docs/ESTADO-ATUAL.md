@@ -1,4 +1,8 @@
-# FMII-Recomp — estado técnico da v0.2.0
+# FMII-Recomp — estado técnico da v0.3.0
+
+## Arte HD da expansão na 0.3.0
+
+- As 518 cartas da expansão têm arte ampliada e miniatura em HD. Marine's Revenge, VWXYZ-Force e Horakhty usam versões tratadas das imagens nativas. Polymerization e Chimaera, the Master of Beasts ainda têm ajustes de enquadramento pendentes.
 
 ## Arte HD da expansão — More Cards 1.7
 
@@ -30,7 +34,7 @@ Consulte [COMECE-AQUI.md](COMECE-AQUI.md) para retomar o projeto.
 
 ## Versionamento e changelog
 
-- A cópia em `mod/` é a `0.2.0`, cujo pacote de distribuição fica em `releases/0.2.0/`. `CHANGELOG.md` registra as alterações desta etapa e alimenta a seção Changelog do guia.
+- A cópia em `mod/` é a `0.3.0`, cujo pacote de distribuição fica em `releases/0.3.0/`. `CHANGELOG.md` registra as alterações desta etapa e alimenta a seção Changelog do guia.
 - A release publicada 0.1.0 foi restaurada com o ZIP, o checksum e o leia-me originais. Seu SHA-256 é `ea2f2baec72fdf7c0d387d8a56abe27a979a4aca95e05c2ff95834b09a2ea3df`. O pacote de desenvolvimento anterior à correção do versionamento está em `D:\Codex\FMII-importacao\desenvolvimento-0.2.0\pacote-antes-do-versionamento\`.
 
 ## Drops atuais: FMII e originais ausentes, por correspondência
