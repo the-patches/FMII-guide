@@ -4300,12 +4300,16 @@
     "bytes": 344308
   },
   "assets/guide.css": {
-    "sha256": "f949365989e6abfa3ff338384f2f7a2abab3f6e6c4be13ec0d357a0e70972dd7",
-    "bytes": 5945
+    "sha256": "4222512f00dd95386bde140a89ae3476bcbd92b05f620141781b1fb508cee4be",
+    "bytes": 6122
   },
   "assets/guide.js": {
-    "sha256": "4e7bd09a53dbe60840149077274bd510b7b24efc9c4d2e6137583d6b7aa0653b",
-    "bytes": 26383
+    "sha256": "b593f11affaf6b926af0507614ffb845b5a91c22aa026d5218dbb0b25d7a2575",
+    "bytes": 29418
+  },
+  "assets/guide-language.js": {
+    "sha256": "82b00f5c1afef0c31c480e2d76bdc941973df7ee365afd7e1c2c4db8f93bd753",
+    "bytes": 10614
   },
   "assets/ui/logo.png": {
     "sha256": "e261111c6ea7f88397cc3154a88322aac90ca8e7bbc082da9ac0e791807ff5ef",
@@ -4320,8 +4324,8 @@
     "bytes": 25862
   },
   "README.md": {
-    "sha256": "e9d8c70db2ce2bb37721f31befb5e7f9d14230b085c5ece0f94b784c3739bb4e",
-    "bytes": 2431
+    "sha256": "b5cc1e6cfcb34102ef6c5708573cc0e5c3d68d28dfbdc55cf4d7ed7f10cd4c7a",
+    "bytes": 2578
   },
   "docs/LEIA-ME-0.3.0.md": {
     "sha256": "42bd861119a04248289feab4c13fe33f2350b104bf7da8fe583c7eb5a1437c8e",

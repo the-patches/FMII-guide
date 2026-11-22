@@ -27,6 +27,10 @@ GOD_TRAP_NOTE = (
     'e pode destruir esta carta quando ela ataca. Armadilhas que não destroem, como '
     'Negate Attack e Magic Cylinder, ainda podem ativar.'
 )
+GOD_TRAP_NOTE_EN = (
+    'Immune to destructive traps such as Mirror Force. Pyramid of Light can destroy '
+    'this card when it attacks. Non-destructive traps such as Negate Attack and Magic Cylinder can still activate.'
+)
 EFFECT_NOTES = {
     'fmii-recomp:fmii-670:1': 'Enquanto Jinzo estiver com a face para cima no campo, '
                               'armadilhas de destruição de ambos os lados ficam bloqueadas.',
@@ -34,6 +38,13 @@ EFFECT_NOTES = {
     'fmii-recomp:fmii-698:1': GOD_TRAP_NOTE,
     'fmii-recomp:fmii-699:1': GOD_TRAP_NOTE,
     'fmii-recomp:fmii-700:1': GOD_TRAP_NOTE,
+}
+EFFECT_NOTES_EN = {
+    'fmii-recomp:fmii-670:1': 'Neither player can activate destructive traps while Jinzo is face up on the field.',
+    'fmii-recomp:fmii-696:1': 'Whoever summons Horakhty face up wins the duel immediately.',
+    'fmii-recomp:fmii-698:1': GOD_TRAP_NOTE_EN,
+    'fmii-recomp:fmii-699:1': GOD_TRAP_NOTE_EN,
+    'fmii-recomp:fmii-700:1': GOD_TRAP_NOTE_EN,
 }
 
 
@@ -96,6 +107,7 @@ def publish_assets(cards, duelists, published_version, check):
             duelist['portrait'] = put(MOD / relative, f'assets/mod/{relative}')
     put(ROOT / 'scripts/guide.css', 'assets/guide.css')
     put(ROOT / 'scripts/guide.js', 'assets/guide.js')
+    put(ROOT / 'scripts/guide-language.js', 'assets/guide-language.js')
     put(ROOT / 'artes/campaign-opening-logo-HD.png', 'assets/ui/logo.png')
     put(MOD / 'textures/scenes/campaign-opening/wall.png', 'assets/ui/wall.png')
     put(ROOT / 'ESTADO-ATUAL.md', 'docs/ESTADO-ATUAL.md')
@@ -114,10 +126,10 @@ def publish_assets(cards, duelists, published_version, check):
             destination.write_text(content, encoding='utf-8')
 
 
-def changelog_html():
+def changelog_html(source):
     blocks = []
     in_list = False
-    for line in (ROOT / 'CHANGELOG.md').read_text(encoding='utf-8').splitlines():
+    for line in source.read_text(encoding='utf-8').splitlines():
         line = line.strip()
         is_item = line.startswith('- ')
         if in_list and not is_item:
@@ -204,7 +216,7 @@ def card_catalog(m, base, definitions):
         thumbnail = entry.get('thumbnail')
         guide_art = f'../mod/{art}' if art else (original_art_path(id) if ref.isdecimal() else None)
         cards.append(dict(id=id, ref=ref, name=name, description=display(value('description', '')),
-                          effectNote=EFFECT_NOTES.get(ref),
+                          effectNote=EFFECT_NOTES.get(ref), effectNoteEn=EFFECT_NOTES_EN.get(ref),
                           type=kind, attribute=named(value('attribute'), definitions.ATTRIBUTE_NAMES),
                           attack=value('attack') if monster else None, defense=value('defense') if monster else None,
                           level=value('level') if monster else None,
@@ -412,13 +424,19 @@ def main():
                  and (folder / 'LEIA-ME.md').is_file()]
     published_version = max(published, key=lambda version: tuple(map(int, version.split('.'))), default=None)
     data = dict(version=m['version'], cards=cards, equips=equip_compatibility, fusions=fusions, rituals=rituals, starter=starter,
-                development='-' in m['version'], publishedVersion=published_version, changelog=changelog_html(),
+                development='-' in m['version'], publishedVersion=published_version,
+                changelog=changelog_html(ROOT / 'CHANGELOG.md'),
+                changelogEn=changelog_html(ROOT / 'scripts/guide-changelog.en.md'),
                 originalStarter=retail_starter(retail.wa, gamedata.STARTER_BASE),
                 conflicts=conflicting_fusions(disc, gamedata, base, refs, fusions),
                 duelists=opponents(base, refs), campaign=campaign())
     publish_assets(cards, data['duelists'], published_version, args.check)
     payload = json.dumps(data, ensure_ascii=False, separators=(',', ':')).replace('<', r'\u003c')
     template = (ROOT / 'scripts/guide-template.html').read_text(encoding='utf-8')
+    for token, asset in (('__GUIDE_CSS__', 'guide.css'), ('__GUIDE_LANGUAGE_JS__', 'guide-language.js'),
+                         ('__GUIDE_JS__', 'guide.js')):
+        digest = hashlib.sha256((ROOT / 'scripts' / asset).read_bytes()).hexdigest()[:12]
+        template = template.replace(token, digest)
     html = template.replace('__GUIDE_DATA__', payload)
     output = GUIDE / 'index.html'
     if not update_original_art(retail.wa, cards, extract_images, args.check):

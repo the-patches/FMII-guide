@@ -7,6 +7,7 @@ Este diretório contém o site estático do guia do FMII-Recomp, pronto para Git
 - `index.html`: guia e dados das cartas, drops, receitas e duelistas.
 - `assets/guide.css`: estilos do guia.
 - `assets/guide.js`: navegação, busca, filtros, ordenação e exportação CSV.
+- `assets/guide-language.js`: textos da opção English.
 - `assets/cartas-originais/`: artes extraídas das cartas originais.
 - `assets/mod/`: imagens utilizadas pelo guia, copiadas do mod.
 - `assets/ui/`: logo e fundo do cabeçalho.
@@ -32,6 +33,8 @@ Publique somente o guia e suas imagens de cartas, retratos e interface. A galeri
 As fontes editáveis ficam em `scripts/guide-template.html`, `scripts/guide.css` e `scripts/guide.js`. O gerador é `scripts/build-guide.py`; os dados vêm do mod e das auditorias do projeto. Execute o gerador e depois `--check` para atualizar e conferir este diretório.
 
 As cópias publicadas do CSS e do JavaScript são idênticas às fontes. Para manter as alterações em futuras gerações, faça as edições nas fontes do projeto e regenere o site.
+
+Ao editar o changelog, atualize a versão em inglês em `scripts/guide-changelog.en.md`.
 
 O repositório do site também preserva uma cópia dessas fontes em `sources/`, incluindo o gerador. Para regenerar os dados do jogo, use o projeto de desenvolvimento completo.
 

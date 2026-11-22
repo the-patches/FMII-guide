@@ -18,3 +18,5 @@ header{border-bottom-color:#685335;background:linear-gradient(100deg,#111a2afc 1
 .frame-color[data-color="Rosa"]{--frame-color:#eb8db8}
 .frame-color[data-color="Roxo"]{--frame-color:#b597f0}
 .frame-color[data-color="Verde"]{--frame-color:#63c6a3}
+.guide-language{display:flex;grid-column:1 / -1;align-items:center;justify-self:end;gap:.6rem;color:var(--muted);font-size:.9rem}
+.guide-language select{padding:.35rem .6rem}
